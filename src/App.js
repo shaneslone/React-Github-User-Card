@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import UserCard from './components/UserCard';
+import Followers from './components/Followers';
+import { StyledApp } from './styles/Styles';
 
-export default class App extends Component {
+class App extends Component {
   state = {
     userInfo: {},
     userFollowers: [],
@@ -14,19 +17,17 @@ export default class App extends Component {
   componentDidMount() {
     this.fetchData('shaneslone', false);
     this.fetchData('shaneslone/followers', true);
-    console.log(this.state.userFollowers);
   }
 
   fetchData = (user, followers) => {
+    // followers is a boolean telling the function where to store the restult of the axios request
     axios
       .get(` https://api.github.com/users/${user}`)
       .then(res => {
         if (!followers) {
           this.setState({ userInfo: res.data, error: null });
-          console.log(this.state.userInfo);
         } else if (followers) {
           this.setState({ userFollowers: res.data });
-          console.log(this.state.userFollowers);
         }
       })
       .catch(err => {
@@ -43,25 +44,41 @@ export default class App extends Component {
     event.preventDefault();
     this.fetchData(this.state.value, false);
     this.fetchData(`${this.state.value}/followers`, true);
+    this.props.history.push('/');
   };
 
   render() {
     return (
-      <div>
+      <StyledApp>
         <form onSubmit={this.handleSubmit}>
           <input
             type='text'
+            placeholder='Enter a Github Username'
             value={this.state.value}
             onChange={this.handleChange}
           />
           <button>Search</button>
         </form>
+
         <p>{this.state.error}</p>
-        <UserCard
-          user={this.state.userInfo}
-          followers={this.state.userFollowers}
-        />
-      </div>
+        <Switch>
+          <Route path='/followers'>
+            <UserCard
+              user={this.state.userInfo}
+              pathway={this.props.location.pathname}
+            />
+            <Followers followers={this.state.userFollowers} />
+          </Route>
+          <Route exact path='/'>
+            <UserCard
+              user={this.state.userInfo}
+              pathway={this.props.location.pathname}
+            />
+          </Route>
+        </Switch>
+      </StyledApp>
     );
   }
 }
+
+export default withRouter(App);

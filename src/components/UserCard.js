@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import GitHubCalendar from 'react-github-calendar';
 
 export default class UserCard extends Component {
   render() {
@@ -18,6 +19,7 @@ export default class UserCard extends Component {
         <p key={this.props.user.followers}>
           Follower Count: {this.props.user.followers}
         </p>
+        <GitHubCalendar username={this.props.user.login} />
         <p>
           {this.props.pathway === '/' ? (
             <Link to='/followers'>See Follower List</Link>

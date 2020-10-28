@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 
 export default class Followers extends Component {
+  handleClick = event => {
+    this.props.getUser(event.target.id, false);
+    this.props.getUser(`${event.target.id}/followers`, true);
+    console.log(event.target.id);
+  };
   render() {
     return (
       <div className='followers'>
@@ -8,7 +13,13 @@ export default class Followers extends Component {
           return (
             <div className='follower' key={follower.id}>
               <img src={follower.avatar_url} alt='Follower' />
-              <p key={follower.login}>{follower.login}</p>
+              <h2
+                key={follower.login}
+                id={follower.login}
+                onClick={this.handleClick}
+              >
+                {follower.login}
+              </h2>
             </div>
           );
         })}

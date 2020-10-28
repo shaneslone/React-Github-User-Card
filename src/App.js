@@ -27,8 +27,11 @@ class App extends Component {
         if (!followers) {
           this.setState({ userInfo: res.data, error: null });
         } else if (followers) {
-          this.setState({ userFollowers: res.data });
+          this.setState({
+            userFollowers: res.data,
+          });
         }
+        console.log(this.state.nextPage);
       })
       .catch(err => {
         console.log(err);
@@ -67,7 +70,10 @@ class App extends Component {
               user={this.state.userInfo}
               pathway={this.props.location.pathname}
             />
-            <Followers followers={this.state.userFollowers} />
+            <Followers
+              followers={this.state.userFollowers}
+              getUser={this.fetchData}
+            />
           </Route>
           <Route exact path='/'>
             <UserCard

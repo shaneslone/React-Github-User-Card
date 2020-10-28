@@ -26,6 +26,10 @@ export const StyledApp = styled.div`
       border: 1px solid black;
       padding: 1%;
       margin: 1%;
+
+      h2 {
+        cursor: pointer;
+      }
     }
   }
 `;

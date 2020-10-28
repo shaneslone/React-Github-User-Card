@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 
 export default class Followers extends Component {
   handleClick = event => {
-    this.props.getUser(event.target.id, false);
-    this.props.getUser(`${event.target.id}/followers`, true);
-    console.log(event.target.id);
+    this.props.getAllData(event.target.id);
   };
   render() {
     return (

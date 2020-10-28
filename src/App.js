@@ -43,11 +43,15 @@ class App extends Component {
     this.setState({ value: event.target.value });
   };
 
+  getAllData = username => {
+    this.fetchData(username, false);
+    this.fetchData(`${username}/followers`, true);
+    this.props.history.push('/');
+  };
+
   handleSubmit = event => {
     event.preventDefault();
-    this.fetchData(this.state.value, false);
-    this.fetchData(`${this.state.value}/followers`, true);
-    this.props.history.push('/');
+    this.getAllData(this.state.value);
   };
 
   render() {
@@ -73,6 +77,7 @@ class App extends Component {
             <Followers
               followers={this.state.userFollowers}
               getUser={this.fetchData}
+              getAllData={this.getAllData}
             />
           </Route>
           <Route exact path='/'>
